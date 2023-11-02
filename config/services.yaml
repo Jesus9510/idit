@@ -22,3 +22,83 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    admin.empresa:
+        class: App\Admin\EmpresaAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Empresa, controller: ~, manager_type: orm, group: admin, label: Empresa }
+
+    admin.convenio:
+        class: App\Admin\ConvenioAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Convenio, controller: ~, manager_type: orm, group: admin, label: Convenio }
+
+    admin.plantilla:
+        class: App\Admin\PlantillaAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Plantilla, controller: ~, manager_type: orm, group: admin, label: Plantilla }
+
+    admin.procedencia_cita:
+        class: App\Admin\ProcedenciaCitaAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\ProcedenciaCita, controller: ~, manager_type: orm, group: admin, label: ProcedenciaCita }
+
+    admin.prioridad_cita:
+        class: App\Admin\PrioridadCitaAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\PrioridadCita, controller: ~, manager_type: orm, group: admin, label: PrioridadCita }
+
+    admin.ciudad:
+        class: App\Admin\CiudadAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Ciudad, controller: ~, manager_type: orm, group: admin, label: Ciudad }
+
+    admin.departamento:
+        class: App\Admin\DepartamentoAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Departamento, controller: ~, manager_type: orm, group: admin, label: Departamento }
+
+    admin.modalidad:
+        class: App\Admin\ModalidadAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Modalidad, controller: ~, manager_type: orm, group: admin, label: Modalidad }
+
+    admin.reporte:
+        class: App\Admin\ReporteAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Reporte, controller: ~, manager_type: orm, group: admin, label: Reporte }
+
+    admin.tipo_documento:
+        class: App\Admin\TipoDocumentoAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\TipoDocumento, controller: ~, manager_type: orm, group: admin, label: TipoDocumento }
+
+    admin.salas:
+        class: App\Admin\SalasAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Salas, controller: ~, manager_type: orm, group: admin, label: Salas }
+
+    admin.sedes:
+        class: App\Admin\SedesAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Sedes, controller: ~, manager_type: orm, group: admin, label: Sedes }
+
+    admin.estudios:
+        class: App\Admin\EstudiosAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Estudios, controller: ~, manager_type: orm, group: admin, label: Estudios }
+
+    admin.especialidad_medico:
+        class: App\Admin\EspecialidadMedicoAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\EspecialidadMedico, controller: ~, manager_type: orm, group: admin, label: EspecialidadMedico }
+
+    admin.tipo_eps:
+        class: App\Admin\TipoEpsAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\TipoEps, controller: ~, manager_type: orm, group: admin, label: TipoEps }
+
+    admin.user:
+        class: App\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\User, controller: ~, manager_type: orm, group: admin, label: User }
