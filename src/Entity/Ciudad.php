@@ -30,12 +30,16 @@ class Ciudad
     #[ORM\OneToMany(mappedBy: 'ciudad', targetEntity: Paciente::class)]
     private Collection $pacientes;
 
+    #[ORM\OneToMany(mappedBy: 'ciudad', targetEntity: Sedes::class)]
+    private Collection $sedes;
+
 
 
     public function __construct()
     {
         $this->convenios = new ArrayCollection();
         $this->pacientes = new ArrayCollection();
+        $this->sedes = new ArrayCollection();
       
     }
 
@@ -134,6 +138,36 @@ class Ciudad
             // set the owning side to null (unless already changed)
             if ($paciente->getCiudad() === $this) {
                 $paciente->setCiudad(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sedes>
+     */
+    public function getSedes(): Collection
+    {
+        return $this->sedes;
+    }
+
+    public function addSede(Sedes $sede): static
+    {
+        if (!$this->sedes->contains($sede)) {
+            $this->sedes->add($sede);
+            $sede->setCiudad($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSede(Sedes $sede): static
+    {
+        if ($this->sedes->removeElement($sede)) {
+            // set the owning side to null (unless already changed)
+            if ($sede->getCiudad() === $this) {
+                $sede->setCiudad(null);
             }
         }
 

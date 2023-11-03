@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -10,10 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+#[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -62,11 +65,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'medico_asignado', targetEntity: DatosClinicos::class)]
     private Collection $datosClinicos;
+    #[Vich\UploadableField(mapping: 'firma', fileNameProperty: 'imageName', size: 'imageSize')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $imageName = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $imageSize = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $registro_medico = null;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?EspecialidadMedico $especialidad = null;
+
+    #[ORM\ManyToMany(targetEntity: Sedes::class, inversedBy: 'users')]
+    private Collection $sedes;
+
 
     public function __construct()
     {
         $this->plantillas = new ArrayCollection();
         $this->datosClinicos = new ArrayCollection();
+        $this->sedes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -293,5 +318,101 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+      /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageSize(?int $imageSize): void
+    {
+        $this->imageSize = $imageSize;
+    }
+
+    public function getImageSize(): ?int
+    {
+        return $this->imageSize;
+    }
+
+    public function getRegistroMedico(): ?string
+    {
+        return $this->registro_medico;
+    }
+
+    public function setRegistroMedico(?string $registro_medico): static
+    {
+        $this->registro_medico = $registro_medico;
+
+        return $this;
+    }
+
+    public function getEspecialidad(): ?EspecialidadMedico
+    {
+        return $this->especialidad;
+    }
+
+    public function setEspecialidad(?EspecialidadMedico $especialidad): static
+    {
+        $this->especialidad = $especialidad;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sedes>
+     */
+    public function getSedes(): Collection
+    {
+        return $this->sedes;
+    }
+
+    public function addSede(Sedes $sede): static
+    {
+        if (!$this->sedes->contains($sede)) {
+            $this->sedes->add($sede);
+        }
+
+        return $this;
+    }
+
+    public function removeSede(Sedes $sede): static
+    {
+        $this->sedes->removeElement($sede);
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->username; // Reemplaza 'nombre' con el atributo que deseas mostrar
     }
 }

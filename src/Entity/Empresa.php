@@ -21,7 +21,7 @@ class Empresa
     #[ORM\Column(length: 255)]
     private ?string $nit = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
     #[ORM\OneToMany(mappedBy: 'empresa', targetEntity: Sedes::class)]
@@ -101,5 +101,9 @@ class Empresa
         }
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->nombre; // Reemplaza 'nombre' con el atributo que deseas mostrar
     }
 }

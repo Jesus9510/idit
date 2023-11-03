@@ -39,12 +39,19 @@ class Sedes
     #[ORM\OneToMany(mappedBy: 'sede', targetEntity: Reporte::class)]
     private Collection $reportes;
 
+    #[ORM\ManyToOne(inversedBy: 'sedes')]
+    private ?Ciudad $ciudad = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'sedes')]
+    private Collection $users;
+
 
 
     public function __construct()
     {
         $this->salas = new ArrayCollection();
         $this->reportes = new ArrayCollection();
+        $this->users = new ArrayCollection();
        
     }
 
@@ -185,6 +192,48 @@ class Sedes
         return $this;
     }
 
-   
+    public function getCiudad(): ?Ciudad
+    {
+        return $this->ciudad;
+    }
+
+    public function setCiudad(?Ciudad $ciudad): static
+    {
+        $this->ciudad = $ciudad;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addSede($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeSede($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nombre; // Reemplaza 'nombre' con el atributo que deseas mostrar
+    }
 }
 

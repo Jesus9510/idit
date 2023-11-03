@@ -27,6 +27,27 @@ class Salas
     #[ORM\OneToMany(mappedBy: 'sala', targetEntity: DatosClinicos::class)]
     private Collection $datosClinicos;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $habilitado = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ae_title = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ip = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $puerto = null;
+
+    #[ORM\Column]
+    private ?bool $nodo_dicom = null;
+
+    #[ORM\Column]
+    private ?bool $paso_lectura = null;
+
+    #[ORM\Column]
+    private ?bool $agrupar_estudios = null;
+
     public function __construct()
     {
         $this->datosClinicos = new ArrayCollection();
@@ -100,6 +121,90 @@ class Salas
                 $datosClinico->setSala(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isHabilitado(): ?bool
+    {
+        return $this->habilitado;
+    }
+
+    public function setHabilitado(?bool $habilitado): static
+    {
+        $this->habilitado = $habilitado;
+
+        return $this;
+    }
+
+    public function getAeTitle(): ?string
+    {
+        return $this->ae_title;
+    }
+
+    public function setAeTitle(?string $ae_title): static
+    {
+        $this->ae_title = $ae_title;
+
+        return $this;
+    }
+
+    public function getIp(): ?string
+    {
+        return $this->ip;
+    }
+
+    public function setIp(?string $ip): static
+    {
+        $this->ip = $ip;
+
+        return $this;
+    }
+
+    public function getPuerto(): ?string
+    {
+        return $this->puerto;
+    }
+
+    public function setPuerto(?string $puerto): static
+    {
+        $this->puerto = $puerto;
+
+        return $this;
+    }
+
+    public function isNodoDicom(): ?bool
+    {
+        return $this->nodo_dicom;
+    }
+
+    public function setNodoDicom(bool $nodo_dicom): static
+    {
+        $this->nodo_dicom = $nodo_dicom;
+
+        return $this;
+    }
+
+    public function isPasoLectura(): ?bool
+    {
+        return $this->paso_lectura;
+    }
+
+    public function setPasoLectura(bool $paso_lectura): static
+    {
+        $this->paso_lectura = $paso_lectura;
+
+        return $this;
+    }
+
+    public function isAgruparEstudios(): ?bool
+    {
+        return $this->agrupar_estudios;
+    }
+
+    public function setAgruparEstudios(bool $agrupar_estudios): static
+    {
+        $this->agrupar_estudios = $agrupar_estudios;
 
         return $this;
     }

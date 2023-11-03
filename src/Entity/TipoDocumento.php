@@ -121,5 +121,9 @@ class TipoDocumento
 
         return $this;
     }
+    public function __toString()
+    {
+        return $this->tipo_documento; // Reemplaza 'nombre' con el atributo que deseas mostrar
+    }
 }
 

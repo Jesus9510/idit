@@ -207,6 +207,9 @@ class Modalidad
 
         return $this;
     }
-
+    public function __toString()
+    {
+        return $this->modalidad; // Reemplaza 'nombre' con el atributo que deseas mostrar
+    }
     
 }

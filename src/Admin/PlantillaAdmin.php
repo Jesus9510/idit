@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+
 
 final class PlantillaAdmin extends AbstractAdmin
 {
@@ -20,6 +22,8 @@ final class PlantillaAdmin extends AbstractAdmin
             
             ->add('nombre')
             ->add('plantilla')
+            ->add('usuario')
+            ->add('modalidad')
             ;
     }
 
@@ -27,8 +31,12 @@ final class PlantillaAdmin extends AbstractAdmin
     {
         $list
           
-        ->addIdentifier('nombre')
+        ->addIdentifier('nombre', null, [
+            'route' => ['name' => 'edit'], 
+        ])
             ->add('plantilla')
+            ->add('usuario')
+            ->add('modalidad')
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'show' => [],
@@ -41,6 +49,8 @@ final class PlantillaAdmin extends AbstractAdmin
         $form
            
             ->add('nombre')
+            ->add('usuario')
+            ->add('modalidad')
             ->add('plantilla', CKEditorType::class, array(
                 'config' => array(
                     'toolbar' => 'full',
@@ -55,6 +65,8 @@ final class PlantillaAdmin extends AbstractAdmin
         $show
            
             ->add('nombre')
+            ->add('usuario')
+            ->add('modalidad')
             ->add('plantilla')
             ;
     }
